@@ -1,4 +1,3 @@
-// src/courses/entities/lesson.entity.ts
 import { Entity, Column, ManyToOne } from 'typeorm';
 import { Course } from './course.entity';
 import { BaseEntity } from './base.entity';

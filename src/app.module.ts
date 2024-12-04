@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserModule } from './modules/user.module';
 
 @Module({
   imports: [
@@ -14,7 +15,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       database: process.env.DATABASE_NAME,
       autoLoadEntities: true,
       synchronize: true,
+      entities: [__dirname + '/**/*.entity.{js,ts}'],
     }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -39,7 +39,6 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true })
   @IsOptional()
-  // @IsPhoneNumber(null, { message: 'Invalid phone number' })
   phone?: string;
 
   @Column({ nullable: true })
