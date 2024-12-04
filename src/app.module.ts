@@ -20,7 +20,7 @@ import { ConfigModule } from '@nestjs/config';
       database: process.env.DATABASE_NAME,
       autoLoadEntities: true,
       synchronize: true,
-      entities: [__dirname + '/**/*.entity.{js,ts}'],
+      // entities: [__dirname + '/**/*.entity.{js,ts}'],
     }),
     UserModule,
   ],

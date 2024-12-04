@@ -17,7 +17,7 @@ import { Answer } from './answer.entity';
 import { Question } from './question.entity';
 import { Payment } from './payment.entity';
 import { BaseEntity } from './base.entity';
-import { UserRole, AccountStatus } from 'src/shared/enum';
+import { UserRole, AccountStatus } from '../../shared/enum';
 import { Course } from './course.entity';
 
 @Entity('users')
