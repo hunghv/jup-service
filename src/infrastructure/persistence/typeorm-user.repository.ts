@@ -1,4 +1,3 @@
-// src/infrastructure/persistence/typeorm-user.repository.ts
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';

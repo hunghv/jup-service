@@ -4,7 +4,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { User } from '../domain/entities/user.entity';
 import { CreateUserHandler } from '../application/commands/handlers/create-user.handler';
 import { GetUserHandler } from '../application/queries/handlers/get-user.handler';
-import { TypeORMUserRepository } from 'src/infrastructure/typeorm-user.repository';
+import { TypeORMUserRepository } from 'src/infrastructure/persistence/typeorm-user.repository';
 import { UserRepository } from 'src/domain/repositories/user.repository';
 import { UserController } from './user.controller';
 
