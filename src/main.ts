@@ -15,9 +15,9 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, documentFactory);
   app.enableCors({
-    origin: ['https://jito-ui.vercel.app', 'http://localhost:3000'], // Allow only this domain
+    origin: ['https://jito-ui.vercel.app', 'http://localhost:3000'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // Allow sending cookies or authorization headers
+    credentials: true,
   });
   app.setGlobalPrefix('api');
   app.enableVersioning({

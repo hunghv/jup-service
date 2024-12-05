@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/entities/user.entity';
-import { CreateUserFirebaseDto } from 'src/models/dtos/user-manager/creaate-user-firebase.dto';
-import { CreateUserDto } from 'src/models/dtos/user-manager/create-user.dto';
-import { UserRepository } from 'src/repositories/user.repository';
-import { AccountStatus, UserRole } from 'src/shared/enum';
+import { User } from '../entities/user.entity';
+import { CreateUserFirebaseDto } from '../models/dtos/user-manager/creaate-user-firebase.dto';
+import { CreateUserDto } from '../models/dtos/user-manager/create-user.dto';
+import { UserRepository } from '../repositories/user.repository';
+import { AccountStatus, UserRole } from '../shared/enum';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()

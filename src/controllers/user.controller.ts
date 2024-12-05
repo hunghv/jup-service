@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
-import { CreateUserFirebaseDto } from 'src/models/dtos/user-manager/creaate-user-firebase.dto';
-import { CreateUserDto } from 'src/models/dtos/user-manager/create-user.dto';
-import { UserService } from 'src/services/user.service';
+import { Controller, Post, Body } from '@nestjs/common';
+import { CreateUserFirebaseDto } from '../models/dtos/user-manager/creaate-user-firebase.dto';
+import { CreateUserDto } from '../models/dtos/user-manager/create-user.dto';
+import { UserService } from '../services/user.service';
 
 @Controller('users')
 export class UserController {

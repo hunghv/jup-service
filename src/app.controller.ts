@@ -1,13 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { Logger } from 'winston';
-import { LogService } from './services/log.service';
+import { LoggerService } from './services/log.service';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private readonly logService: LogService,
+    private readonly logService: LoggerService,
   ) {}
   @Get()
   getHello(): string {

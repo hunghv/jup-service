@@ -1,33 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { createLogger, transports, format, Logger as WinstonLogger } from 'winston';
-import * as DailyRotateFile from 'winston-daily-rotate-file';
+import * as winston from 'winston';
+import DailyRotateFile from 'winston-daily-rotate-file';
 
 @Injectable()
-export class LogService {
-  private readonly logger: WinstonLogger;
-
-  constructor() {
-    this.logger = createLogger({
-      level: 'info',
-      format: format.combine(
-        format.colorize(),
-        format.timestamp(),
-        format.printf(({ timestamp, level, message }) => {
-          return `${timestamp} [${level}]: ${message}`;
-        }),
-      ),
-      transports: [
-        new transports.Console(),
-        new DailyRotateFile({
-          filename: 'logs/%DATE%-app.log',
-          datePattern: 'YYYY-MM-DD',
-          zippedArchive: true,
-          maxSize: '20m',
-          maxFiles: '14d',
-        }),
-      ],
-    });
-  }
+export class LoggerService {
+  private logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.json(),
+    ),
+    transports: [
+      new DailyRotateFile({
+        filename: 'logs/application-%DATE%.log',
+        datePattern: 'YYYY-MM-DD',
+        zippedArchive: true,
+        maxSize: '20m',
+        maxFiles: '14d',
+      }),
+      new winston.transports.Console(),
+    ],
+  });
 
   log(message: string) {
     this.logger.info(message);
