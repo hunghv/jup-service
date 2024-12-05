@@ -4,9 +4,11 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './modules/user.module';
 import { ConfigModule } from '@nestjs/config';
+import { LogModule } from './modules/log.module';
 
 @Module({
   imports: [
+    LogModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',

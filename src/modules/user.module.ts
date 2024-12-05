@@ -1,22 +1,21 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CqrsModule } from '@nestjs/cqrs';
-import { User } from '../domain/entities/user.entity';
-import { CreateUserHandler } from '../application/commands/handlers/create-user.handler';
-import { GetUserHandler } from '../application/queries/handlers/get-user.handler';
-import { UserRepository } from 'src/domain/repositories/user.repository';
-import { UserController } from './user.controller';
-import { TypeORMUserRepository } from '../infrastructure/persistence';
-import { Answer } from 'src/domain/entities/answer.entity';
-import { Comment } from 'src/domain/entities/comment.entity';
-import { Course } from 'src/domain/entities/course.entity';
-import { Enrollment } from 'src/domain/entities/enrollment.entity';
-import { Lesson } from 'src/domain/entities/lesson.entity';
-import { Like } from 'src/domain/entities/like.entity';
-import { News } from 'src/domain/entities/news.entity';
-import { Payment } from 'src/domain/entities/payment.entity';
-import { Question } from 'src/domain/entities/question.entity';
-import { Review } from 'src/domain/entities/review.entity';
+import { User } from '../entities/user.entity';
+import { UserRepository } from 'src/repositories/user.repository';
+import { UserController } from '../controllers/user.controller';
+import { Answer } from 'src/entities/answer.entity';
+import { Comment } from 'src/entities/comment.entity';
+import { Course } from 'src/entities/course.entity';
+import { Enrollment } from 'src/entities/enrollment.entity';
+import { Lesson } from 'src/entities/lesson.entity';
+import { Like } from 'src/entities/like.entity';
+import { News } from 'src/entities/news.entity';
+import { Payment } from 'src/entities/payment.entity';
+import { Question } from 'src/entities/question.entity';
+import { Review } from 'src/entities/review.entity';
+import { TypeORMUserRepository } from 'src/repositories/typeorm-user.repository';
+import { UserService } from 'src/services/user.service';
 
 @Module({
   imports: [
@@ -36,14 +35,8 @@ import { Review } from 'src/domain/entities/review.entity';
     CqrsModule,
   ],
   providers: [
-    // Infrastructure
     { provide: UserRepository, useClass: TypeORMUserRepository },
-
-    // Command Handlers
-    CreateUserHandler,
-
-    // Query Handlers
-    GetUserHandler,
+    UserService,
   ],
   exports: [UserRepository],
   controllers: [UserController],

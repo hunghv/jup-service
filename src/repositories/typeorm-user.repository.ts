@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserRepository } from 'src/domain/repositories/user.repository';
-import { User } from 'src/domain/entities/user.entity';
+import { UserRepository } from 'src/repositories/user.repository';
+import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class TypeORMUserRepository extends UserRepository {
@@ -14,7 +14,11 @@ export class TypeORMUserRepository extends UserRepository {
   }
 
   save(user: User): Promise<User> {
-    return this.repository.save(user);
+    try {
+      return this.repository.save(user);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   findById(id: string): Promise<User | null> {

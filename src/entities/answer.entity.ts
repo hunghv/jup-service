@@ -1,10 +1,10 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
 import { Question } from './question.entity';
-import { User } from './user.entity';
 import { Course } from './course.entity';
 import { BaseEntity } from './base.entity';
+import { User } from './user.entity';
 
-@Entity()
+@Entity('answers')
 export class Answer extends BaseEntity {
   @Column()
   content: string; // Nội dung câu trả lời
