@@ -2,9 +2,14 @@ import { Module } from '@nestjs/common';
 import { LoggerService } from '../services/log.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerEntity } from '../entities/log/logger.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DATABASE_LOG_HOST,
