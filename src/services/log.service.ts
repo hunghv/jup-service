@@ -1,40 +1,40 @@
 import { Injectable } from '@nestjs/common';
-import * as winston from 'winston';
-import DailyRotateFile from 'winston-daily-rotate-file';
+import { InjectRepository } from '@nestjs/typeorm';
+import { LoggerEntity } from 'src/entities/log/logger.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class LoggerService {
-  private logger = winston.createLogger({
-    level: 'info',
-    format: winston.format.combine(
-      winston.format.timestamp(),
-      winston.format.json(),
-    ),
-    transports: [
-      new DailyRotateFile({
-        filename: 'logs/application-%DATE%.log',
-        datePattern: 'YYYY-MM-DD',
-        zippedArchive: true,
-        maxSize: '20m',
-        maxFiles: '14d',
-      }),
-      new winston.transports.Console(),
-    ],
-  });
+  constructor(
+    @InjectRepository(LoggerEntity)
+    private loggerRepository: Repository<LoggerEntity>,
+  ) {}
 
-  log(message: string) {
-    this.logger.info(message);
+  async log(message: string) {
+    const log = this.createLog('info', message);
+    await this.loggerRepository.save(log);
   }
 
-  error(message: string) {
-    this.logger.error(message);
+  async warn(message: string) {
+    const log = this.createLog('warn', message);
+    await this.loggerRepository.save(log);
   }
 
-  warn(message: string) {
-    this.logger.warn(message);
+  async error(message: string, stack?: string) {
+    const log = this.createLog('error', message, stack);
+    await this.loggerRepository.save(log);
   }
 
-  debug(message: string) {
-    this.logger.debug(message);
+  private createLog(
+    level: string,
+    message: string,
+    stack?: string,
+  ): LoggerEntity {
+    const log = new LoggerEntity();
+    log.timestamp = new Date();
+    log.level = level;
+    log.message = message;
+    log.stack = stack || null;
+    return log;
   }
 }
