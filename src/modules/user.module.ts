@@ -16,7 +16,6 @@ import { Question } from '../entities/question.entity';
 import { Review } from '../entities/review.entity';
 import { TypeORMUserRepository } from '../repositories/typeorm-user.repository';
 import { UserService } from '../services/user.service';
-import { LoggerService } from 'src/services/log.service';
 import { LogModule } from './log.module';
 
 @Module({
