@@ -21,6 +21,9 @@
     "deploy": "vercel --prod"
   },
   "dependencies": {
+    "@automapper/core": "^8.8.1",
+    "@automapper/nestjs": "^8.8.1",
+    "@automapper/types": "^6.3.1",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.3.0",
     "@nestjs/core": "^10.0.0",
@@ -37,7 +40,7 @@
     "nest-winston": "^1.9.7",
     "passport": "^0.7.0",
     "pg": "^8.13.1",
-    "reflect-metadata": "^0.2.0",
+    "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "swagger-ui-express": "^5.0.1",
     "typeorm": "^0.3.20",

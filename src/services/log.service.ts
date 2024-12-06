@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class LoggerService {
   constructor(
-    @InjectRepository(LoggerEntity)
+    @InjectRepository(LoggerEntity, 'log_db')
     private loggerRepository: Repository<LoggerEntity>,
   ) {}
 

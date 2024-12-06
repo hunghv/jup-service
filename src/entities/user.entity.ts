@@ -22,10 +22,8 @@ import { Course } from './course.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
-  @Column()
-  @IsString()
-  @IsNotEmpty({ message: 'Full name is required' })
-  @Length(2, 30, { message: 'Full name must be between 2 and 30 characters' })
+  @Column({ nullable: true })
+  @IsOptional()
   fullname: string;
 
   @Column({ unique: true })
@@ -102,10 +100,6 @@ export class User extends BaseEntity {
   @IsDate()
   lastLogin?: Date;
 
-  @Column({ default: false })
-  @IsOptional()
-  isActive?: boolean;
-
   @Column({ nullable: true })
   @IsOptional()
   @IsString()
@@ -115,6 +109,26 @@ export class User extends BaseEntity {
   @IsOptional()
   @IsString()
   bio?: string;
+
+  @Column({ nullable: true })
+  @IsOptional()
+  @IsString()
+  city?: string;
+
+  @Column({ nullable: true })
+  @IsOptional()
+  @IsString()
+  state?: string;
+
+  @Column({ nullable: true })
+  @IsOptional()
+  @IsString()
+  zipCode?: string;
+
+  @Column({ nullable: true })
+  @IsOptional()
+  @IsString()
+  gender?: string;
 
   @OneToMany(() => Comment, (comment) => comment.user)
   @IsOptional()

@@ -1,9 +1,7 @@
-import { CreateUserFirebaseDto } from './creaate-user-firebase.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
-import { UserRole, AccountStatus } from 'src/shared/enum';
 
-export class CreateUserDto {
+export class UpdateProfileDto {
   @ApiProperty({
     description: 'Full name of the user',
     example: 'John Doe',
@@ -58,20 +56,6 @@ export class CreateUserDto {
   })
   @IsOptional()
   profilePictureUrl?: string;
-
-  @ApiProperty({
-    description: 'Role of the user',
-    enum: UserRole, // Assuming UserRole is an enum
-  })
-  @IsOptional()
-  role: UserRole;
-
-  @ApiProperty({
-    description: 'Account status of the user',
-    enum: AccountStatus, // Assuming AccountStatus is an enum
-  })
-  @IsOptional()
-  accountStatus: AccountStatus;
 
   @ApiProperty({
     description: "User's Facebook profile URL",
@@ -164,8 +148,4 @@ export class CreateUserDto {
   })
   @IsOptional()
   bio?: string;
-
-  @ApiProperty({ example: CreateUserFirebaseDto })
-  @IsOptional()
-  firebaseUser: CreateUserFirebaseDto;
 }
