@@ -7,6 +7,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { AuthService } from '../services/authen.service';
+import { Public } from 'src/utils/roles.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -14,11 +15,14 @@ export class AuthController {
 
   @Post('reset-pasword')
   @Version('1')
+  @Public()
   ResetPassword(@Body('email') email: string) {
     return this.authService.sendPasswordReset(email);
   }
 
   @Post('login')
+  @Version('1')
+  @Public()
   async login(@Body('token') token: string) {
     try {
       const decodedToken = await this.authService.verifyToken(token);

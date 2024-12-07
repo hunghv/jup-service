@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 // import { CreateAuthDto } from './dto/create-auth.dto';
 import { firebaseAuth } from '../shared/configs/firebase-admin';
-import { User } from '../entities/user.entity';
-import { InjectRepository } from '@nestjs/typeorm';
 // import { ResponseModel } from '../models/reponse/response.model';
 import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 import { LoggerService } from './log.service';
@@ -11,7 +9,6 @@ import { UserRepository } from 'src/repositories/user.repository';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User)
     private readonly userRepository: UserRepository,
     private readonly logService: LoggerService,
   ) {}

@@ -1,18 +1,9 @@
-import {
-  Controller,
-  Post,
-  Body,
-  Get,
-  Query,
-  UseGuards,
-  Version,
-} from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, Version } from '@nestjs/common';
 import { CreateUserFirebaseDto } from '../models/dtos/user-manager/creaate-user-firebase.dto';
 import { CreateUserDto } from '../models/dtos/user-manager/create-user.dto';
 import { UserService } from '../services/user.service';
 import { ApiQuery, ApiResponse } from '@nestjs/swagger';
-import { FirebaseAuthGuard } from 'src/utils/firebase-auth.guard';
-import { Roles } from 'src/utils/roles.decorator';
+import { Public, Roles } from 'src/utils/roles.decorator';
 
 @Controller('users')
 export class UserController {
@@ -20,6 +11,7 @@ export class UserController {
 
   @Post('create-firebase')
   @Version('1')
+  @Public()
   async createFirebaseUser(@Body() request: CreateUserFirebaseDto) {
     return this.userService.createFirebaseUser(request);
   }
@@ -32,7 +24,6 @@ export class UserController {
 
   @Get()
   @Version('1')
-  @UseGuards(FirebaseAuthGuard)
   @Roles('admin')
   @ApiQuery({
     name: 'page',

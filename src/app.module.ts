@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -6,6 +6,8 @@ import { UserModule } from './modules/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { LogModule } from './modules/log.module';
 import { LoggerEntity } from './entities/log/logger.entity';
+import { TokenMiddleware } from './middleware/token.middleware';
+import { AuthModule } from './modules/auth.module';
 
 @Module({
   imports: [
@@ -36,10 +38,15 @@ import { LoggerEntity } from './entities/log/logger.entity';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    AuthModule,
     UserModule,
     LogModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(TokenMiddleware).forRoutes('*'); // Áp dụng middleware cho tất cả các routes
+  }
+}

@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CqrsModule } from '@nestjs/cqrs';
 import { User } from '../entities/user.entity';
 import { UserRepository } from '../repositories/user.repository';
 import { UserController } from '../controllers/user.controller';
@@ -17,6 +16,7 @@ import { Review } from '../entities/review.entity';
 import { TypeORMUserRepository } from '../repositories/typeorm-user.repository';
 import { UserService } from '../services/user.service';
 import { LogModule } from './log.module';
+import { FirebaseAuthGuard } from 'src/utils/firebase-auth.guard';
 
 @Module({
   imports: [
@@ -36,14 +36,14 @@ import { LogModule } from './log.module';
       ],
       'app_db',
     ),
-    CqrsModule,
     LogModule,
   ],
   providers: [
     { provide: UserRepository, useClass: TypeORMUserRepository },
     UserService,
+    FirebaseAuthGuard,
   ],
-  exports: [UserRepository],
+  exports: [UserRepository, TypeOrmModule, FirebaseAuthGuard],
   controllers: [UserController],
 })
 export class UserModule {}

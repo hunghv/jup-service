@@ -5,19 +5,27 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { AuthService } from 'src/services/authen.service';
+import { UserRepository } from 'src/repositories/user.repository';
 import { firebaseAuth } from 'src/shared/configs/firebase-admin';
 
 @Injectable()
 export class FirebaseAuthGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    private authService: AuthService,
+    private readonly userRepository: UserRepository,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = request.headers.authorization?.split('Bearer ')[1];
+    const isPublic = this.reflector.get<boolean>(
+      'isPublic',
+      context.getHandler(),
+    );
+
+    if (isPublic) {
+      return true;
+    }
 
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
     if (!roles) {
@@ -32,7 +40,7 @@ export class FirebaseAuthGuard implements CanActivate {
       const decodedToken = await firebaseAuth.verifyIdToken(token);
       request.user = decodedToken;
 
-      const systemUser = await this.authService.findUserByMail(
+      const systemUser = await this.userRepository.findByEmail(
         request.user.email,
       );
 
