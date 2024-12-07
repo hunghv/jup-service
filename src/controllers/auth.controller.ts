@@ -7,7 +7,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { AuthService } from '../services/authen.service';
-import { Public } from 'src/utils/roles.decorator';
+import { Public } from '../utils/roles.decorator';
 
 @Controller('auth')
 export class AuthController {

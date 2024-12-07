@@ -4,7 +4,7 @@ import { firebaseAuth } from '../shared/configs/firebase-admin';
 // import { ResponseModel } from '../models/reponse/response.model';
 import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 import { LoggerService } from './log.service';
-import { UserRepository } from 'src/repositories/user.repository';
+import { UserRepository } from '../repositories/user.repository';
 
 @Injectable()
 export class AuthService {

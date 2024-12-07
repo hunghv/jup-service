@@ -2,7 +2,7 @@ import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
-import { firebaseAuth } from 'src/shared/configs/firebase-admin';
+import { firebaseAuth } from '../shared/configs/firebase-admin';
 
 @Injectable({ scope: Scope.REQUEST })
 export class TokenService {

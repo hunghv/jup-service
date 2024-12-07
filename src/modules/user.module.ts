@@ -16,7 +16,7 @@ import { Review } from '../entities/review.entity';
 import { TypeORMUserRepository } from '../repositories/typeorm-user.repository';
 import { UserService } from '../services/user.service';
 import { LogModule } from './log.module';
-import { FirebaseAuthGuard } from 'src/utils/firebase-auth.guard';
+import { FirebaseAuthGuard } from '../utils/firebase-auth.guard';
 
 @Module({
   imports: [

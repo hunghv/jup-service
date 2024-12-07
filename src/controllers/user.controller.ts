@@ -3,7 +3,7 @@ import { CreateUserFirebaseDto } from '../models/dtos/user-manager/creaate-user-
 import { CreateUserDto } from '../models/dtos/user-manager/create-user.dto';
 import { UserService } from '../services/user.service';
 import { ApiQuery, ApiResponse } from '@nestjs/swagger';
-import { Public, Roles } from 'src/utils/roles.decorator';
+import { Public, Roles } from '../utils/roles.decorator';
 
 @Controller('users')
 export class UserController {
