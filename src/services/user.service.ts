@@ -107,4 +107,15 @@ export class UserService {
       );
     }
   }
+
+  async findAll(
+    page: number,
+    limit: number,
+    sort: string,
+    filter: string,
+  ): Promise<{ data: User[]; total: number }> {
+    const response = await this.userRepository.find(page, limit, sort, filter);
+
+    return response;
+  }
 }

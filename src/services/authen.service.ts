@@ -2,17 +2,17 @@ import { Injectable } from '@nestjs/common';
 // import { CreateAuthDto } from './dto/create-auth.dto';
 import { firebaseAuth } from '../shared/configs/firebase-admin';
 import { User } from '../entities/user.entity';
-import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 // import { ResponseModel } from '../models/reponse/response.model';
 import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 import { LoggerService } from './log.service';
+import { UserRepository } from 'src/repositories/user.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
-    private userRepository: Repository<User>,
+    private readonly userRepository: UserRepository,
     private readonly logService: LoggerService,
   ) {}
 
@@ -61,9 +61,7 @@ export class AuthService {
 
     if (!user.emailVerified) {
       const link = await firebaseAuth.generateEmailVerificationLink(user.email);
-      const existingUser = await this.userRepository.findOne({
-        where: { email: user.email },
-      });
+      const existingUser = await this.userRepository.findByEmail(user.email);
 
       const mail = {
         to: existingUser.email,
@@ -80,16 +78,12 @@ export class AuthService {
   }
 
   async findUserByMail(mail: string) {
-    const existingUser = await this.userRepository.findOne({
-      where: { email: mail },
-    });
+    const existingUser = await this.userRepository.findByEmail(mail);
     return existingUser;
   }
 
   async sendPasswordReset(email: string) {
-    const existingUser = await this.userRepository.findOne({
-      where: { email: email },
-    });
+    const existingUser = await this.userRepository.findByEmail(email);
     const resetLink = await firebaseAuth.generatePasswordResetLink(email);
 
     const mail = {
