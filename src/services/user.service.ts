@@ -1,4 +1,8 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { CreateUserFirebaseDto } from '../models/dtos/user-manager/creaate-user-firebase.dto';
 import { CreateUserDto } from '../models/dtos/user-manager/create-user.dto';
@@ -7,12 +11,14 @@ import { AccountStatus, UserRole } from '../shared/enum';
 import { v4 as uuidv4 } from 'uuid';
 import { LoggerService } from './log.service';
 import { UpdateProfileDto } from '../models/dtos/user-manager/update-user.dto';
+import { TokenService } from './token.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly logService: LoggerService,
+    private readonly tokenService: TokenService,
   ) {}
 
   async createFirebaseUser(createUserDto: CreateUserFirebaseDto) {
@@ -67,9 +73,13 @@ export class UserService {
     }
   }
 
-  async updateProfile(request: UpdateProfileDto, email: string) {
+  async updateProfile(request: UpdateProfileDto) {
     try {
-      const newUser = await this.userRepository.findByEmail(email);
+      const tokenData = await this.tokenService.getToken();
+      if (!tokenData) {
+        throw new UnauthorizedException();
+      }
+      const newUser = await this.userRepository.findByEmail(tokenData.email);
       if (newUser) {
         const user: User = {
           ...newUser,
@@ -84,7 +94,6 @@ export class UserService {
           city: request.city,
           state: request.state,
           zipCode: request.zipCode,
-          createdAt: new Date(),
           role: UserRole.STUDENT,
           accountStatus: AccountStatus.ACTIVE,
           facebookProfile: request.facebookProfile,

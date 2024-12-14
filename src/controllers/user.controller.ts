@@ -4,6 +4,7 @@ import { CreateUserDto } from '../models/dtos/user-manager/create-user.dto';
 import { UserService } from '../services/user.service';
 import { ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { Public, Roles } from '../utils/roles.decorator';
+import { UpdateProfileDto } from 'src/models/dtos/user-manager/update-user.dto';
 
 @Controller('users')
 export class UserController {
@@ -20,6 +21,12 @@ export class UserController {
   @Version('1')
   async createUser(@Body() request: CreateUserDto) {
     return this.userService.create(request);
+  }
+
+  @Post('update')
+  @Version('1')
+  async updateUser(@Body() request: UpdateProfileDto) {
+    return this.userService.updateProfile(request);
   }
 
   @Get()
