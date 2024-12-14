@@ -3,6 +3,7 @@ import { LoggerService } from '../services/log.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerEntity } from '../entities/log/logger.entity';
 import { ConfigModule } from '@nestjs/config';
+import { TokenService } from 'src/services/token.service';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { ConfigModule } from '@nestjs/config';
     }),
     TypeOrmModule.forFeature([LoggerEntity], 'log_db'),
   ],
-  providers: [LoggerService],
-  exports: [LoggerService],
+  providers: [LoggerService, TokenService],
+  exports: [LoggerService, TokenService],
 })
-export class LogModule {}
+export class SharedModule {}

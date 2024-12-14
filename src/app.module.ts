@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './modules/user.module';
 import { ConfigModule } from '@nestjs/config';
-import { LogModule } from './modules/log.module';
+import { SharedModule } from './modules/share.module';
 import { LoggerEntity } from './entities/log/logger.entity';
 import { TokenMiddleware } from './middleware/token.middleware';
 import { AuthModule } from './modules/auth.module';
@@ -40,7 +40,7 @@ import { AuthModule } from './modules/auth.module';
     }),
     AuthModule,
     UserModule,
-    LogModule,
+    SharedModule,
   ],
   controllers: [AppController],
   providers: [AppService],

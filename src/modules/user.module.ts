@@ -15,7 +15,7 @@ import { Question } from '../entities/question.entity';
 import { Review } from '../entities/review.entity';
 import { TypeORMUserRepository } from '../repositories/typeorm-user.repository';
 import { UserService } from '../services/user.service';
-import { LogModule } from './log.module';
+import { SharedModule } from './share.module';
 import { FirebaseAuthGuard } from '../utils/firebase-auth.guard';
 
 @Module({
@@ -36,7 +36,7 @@ import { FirebaseAuthGuard } from '../utils/firebase-auth.guard';
       ],
       'app_db',
     ),
-    LogModule,
+    SharedModule,
   ],
   providers: [
     { provide: UserRepository, useClass: TypeORMUserRepository },
