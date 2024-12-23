@@ -12,7 +12,7 @@ export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly logService: LoggerService,
-  ) { }
+  ) {}
 
   async verifyToken(idToken: string): Promise<DecodedIdToken> {
     try {

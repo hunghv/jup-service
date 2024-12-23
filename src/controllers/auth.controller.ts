@@ -48,7 +48,7 @@ export class AuthController {
   @Public()
   async GetToken(@Body() request: TokenDto) {
     return ResponseModel.success(
-      this.authService.fetchToken(request),
+      await this.authService.fetchToken(request),
       'Fetch Token Sucessully',
     );
   }
