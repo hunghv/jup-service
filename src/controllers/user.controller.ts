@@ -4,7 +4,7 @@ import { CreateUserDto } from '../models/dtos/user-manager/create-user.dto';
 import { UserService } from '../services/user.service';
 import { ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { Public, Roles } from '../utils/roles.decorator';
-import { UpdateProfileDto } from 'src/models/dtos/user-manager/update-user.dto';
+import { UpdateProfileDto } from '../models/dtos/user-manager/update-user.dto';
 
 @Controller('users')
 export class UserController {
