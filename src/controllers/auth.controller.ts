@@ -8,6 +8,8 @@ import {
 } from '@nestjs/common';
 import { AuthService } from '../services/authen.service';
 import { Public } from '../utils/roles.decorator';
+import { TokenDto } from '../models/requests/get-token.dto';
+import { ResponseModel } from 'src/models/reponse/response.model';
 
 @Controller('auth')
 export class AuthController {
@@ -39,5 +41,15 @@ export class AuthController {
       console.log(error);
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
+  }
+
+  @Post('fetchToken')
+  @Version('1')
+  @Public()
+  async GetToken(@Body() request: TokenDto) {
+    return ResponseModel.success(
+      this.authService.fetchToken(request),
+      'Fetch Token Sucessully',
+    );
   }
 }
