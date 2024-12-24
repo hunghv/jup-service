@@ -8,6 +8,7 @@ import { SharedModule } from './modules/share.module';
 import { LoggerEntity } from './entities/log/logger.entity';
 import { TokenMiddleware } from './middleware/token.middleware';
 import { AuthModule } from './modules/auth.module';
+import { ChatModule } from './modules/chat.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { AuthModule } from './modules/auth.module';
     AuthModule,
     UserModule,
     SharedModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],
