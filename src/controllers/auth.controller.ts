@@ -9,7 +9,7 @@ import {
 import { AuthService } from '../services/authen.service';
 import { Public } from '../utils/roles.decorator';
 import { TokenDto } from '../models/requests/get-token.dto';
-import { ResponseModel } from 'src/models/reponse/response.model';
+import { ResponseModel } from '../models/reponse/response.model';
 
 @Controller('auth')
 export class AuthController {

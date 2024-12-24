@@ -5,8 +5,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { UserRepository } from 'src/repositories/user.repository';
-import { firebaseAuth } from 'src/shared/configs/firebase-admin';
+import { UserRepository } from '../repositories/user.repository';
+import { firebaseAuth } from '../shared/configs/firebase-admin';
 
 @Injectable()
 export class FirebaseAuthGuard implements CanActivate {

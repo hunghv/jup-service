@@ -1,7 +1,7 @@
 import { CreateUserFirebaseDto } from './creaate-user-firebase.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
-import { UserRole, AccountStatus } from 'src/shared/enum';
+import { UserRole, AccountStatus } from '../../../shared/enum';
 
 export class CreateUserDto {
   @ApiProperty({

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Message } from 'src/entities/chat.entity';
+import { Message } from '../entities/chat.entity';
 import { UserRepository } from '../repositories/user.repository';
 import { Repository } from 'typeorm';
 

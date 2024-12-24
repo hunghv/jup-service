@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ChatController } from 'src/controllers/chat.controller';
-import { Message } from 'src/entities/chat.entity';
-import { User } from 'src/entities/user.entity';
-import { ChatGateway } from 'src/gateway/chat.gateway';
-import { ChatService } from 'src/services/chat.service';
+import { ChatController } from '../controllers/chat.controller';
+import { Message } from '../entities/chat.entity';
+import { User } from '../entities/user.entity';
+import { ChatGateway } from '../gateway/chat.gateway';
+import { ChatService } from '../services/chat.service';
 import { UserModule } from './user.module';
 
 @Module({

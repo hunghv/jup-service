@@ -3,7 +3,7 @@ import { LoggerService } from '../services/log.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerEntity } from '../entities/log/logger.entity';
 import { ConfigModule } from '@nestjs/config';
-import { TokenService } from 'src/services/token.service';
+import { TokenService } from '../services/token.service';
 
 @Module({
   imports: [
