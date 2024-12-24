@@ -2,20 +2,43 @@ import {
   Controller,
   Post,
   UploadedFile,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from '../services/cloudinary.service';
 import { ResponseModel } from '../models/reponse/response.model';
+import { memoryStorage } from 'multer';
 
 @Controller('upload')
 export class UploadController {
   constructor(private readonly cloudinaryService: CloudinaryService) {}
 
-  @Post()
+  @Post('image')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
     const result = await this.cloudinaryService.uploadImage(file, 'uploads');
     return ResponseModel.success(result.secure_url);
+  }
+
+  @Post('images')
+  @UseInterceptors(
+    FilesInterceptor('files', 20, {
+      storage: memoryStorage(),
+      limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+      fileFilter: (req, file, callback) => {
+        if (file.mimetype.match(/image\/(jpeg|png|gif)$/)) {
+          callback(null, true);
+        } else {
+          callback(new Error('Only image files are allowed!'), false);
+        }
+      },
+    }),
+  )
+  async uploadFiles(@UploadedFiles() files: Express.Multer.File[]) {
+    const uploadResults = await Promise.all(
+      files.map((file) => this.cloudinaryService.uploadImage(file, 'files')),
+    );
+    return ResponseModel.success(uploadResults);
   }
 }
