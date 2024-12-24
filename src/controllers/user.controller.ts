@@ -1,11 +1,21 @@
-import { Controller, Post, Body, Get, Query, Version } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Query,
+  Version,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CreateUserFirebaseDto } from '../models/dtos/user-manager/creaate-user-firebase.dto';
 import { CreateUserDto } from '../models/dtos/user-manager/create-user.dto';
 import { UserService } from '../services/user.service';
 import { ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { Public, Roles } from '../utils/roles.decorator';
 import { UpdateProfileDto } from '../models/dtos/user-manager/update-user.dto';
-import { ResponseModel } from 'src/models/reponse/response.model';
+import { ResponseModel } from '../models/reponse/response.model';
+import { RoleConstants } from '../shared/constants/role.constants';
 
 @Controller('users')
 export class UserController {
@@ -30,9 +40,16 @@ export class UserController {
     return this.userService.updateProfile(request);
   }
 
+  @Get(':id')
+  @Roles(RoleConstants.SYSTEMADMIN)
+  @Version('1')
+  async findOne(@Param('id') id: string) {
+    return await this.userService.findOne(id);
+  }
+
   @Get()
   @Version('1')
-  @Roles('System admin')
+  @Roles(RoleConstants.SYSTEMADMIN)
   @ApiQuery({
     name: 'page',
     required: false,
@@ -71,5 +88,12 @@ export class UserController {
       page: +page,
       limit: +limit,
     });
+  }
+
+  @Delete(':id')
+  @Version('1')
+  @Roles('admin')
+  async remove(@Param('id') id: string) {
+    return await this.userService.delete(id);
   }
 }

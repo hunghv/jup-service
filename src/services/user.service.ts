@@ -21,6 +21,13 @@ export class UserService {
     private readonly tokenService: TokenService,
   ) {}
 
+  async findOne(id: string) {
+    await this.userRepository.findById(id);
+  }
+  async delete(id: string) {
+    await this.userRepository.delete(id);
+  }
+
   async createFirebaseUser(createUserDto: CreateUserFirebaseDto) {
     try {
       const newUser: User = {
