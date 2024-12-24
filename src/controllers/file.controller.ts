@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from '../services/cloudinary.service';
-import { ResponseModel } from 'src/models/reponse/response.model';
+import { ResponseModel } from '../models/reponse/response.model';
 
 @Controller('upload')
 export class UploadController {
