@@ -28,6 +28,10 @@ export class UserService {
     await this.userRepository.delete(id);
   }
 
+  async updateAvatar(id: string) {
+    await this.userRepository.delete(id);
+  }
+
   async createFirebaseUser(createUserDto: CreateUserFirebaseDto) {
     try {
       const newUser: User = {

@@ -1,14 +1,15 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppController } from '../controllers/app.controller';
+import { AppService } from '../services/app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule } from './modules/user.module';
+import { UserModule } from './user.module';
 import { ConfigModule } from '@nestjs/config';
-import { SharedModule } from './modules/share.module';
-import { LoggerEntity } from './entities/log/logger.entity';
-import { TokenMiddleware } from './middleware/token.middleware';
-import { AuthModule } from './modules/auth.module';
-import { ChatModule } from './modules/chat.module';
+import { SharedModule } from './share.module';
+import { LoggerEntity } from '../entities/log/logger.entity';
+import { TokenMiddleware } from '../middleware/token.middleware';
+import { AuthModule } from './auth.module';
+import { ChatModule } from './chat.module';
+import { CloudinaryModule } from './cloudinary.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { ChatModule } from './modules/chat.module';
     UserModule,
     SharedModule,
     ChatModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
