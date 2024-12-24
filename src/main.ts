@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { FirebaseAuthGuard } from './utils/firebase-auth.guard';
 import { UserRepository } from './repositories/user.repository';
+import { GlobalExceptionFilter } from './middleware/globalFilter.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -43,6 +44,8 @@ async function bootstrap() {
     allowedHeaders:
       'Origin, X-Requested-With, Content-Type, Accept, Authentication, Authorization, authorization, Access-control-allow-credentials, Access-control-allow-headers, Access-control-allow-methods, Access-control-allow-origin, User-Agent, Referer, Accept-Encoding, Accept-Language, Access-Control-Request-Headers, Cache-Control, Pragma',
   });
+
+  app.useGlobalFilters(new GlobalExceptionFilter());
 
   app.setGlobalPrefix('api');
   app.enableVersioning({

@@ -5,6 +5,7 @@ import { UserService } from '../services/user.service';
 import { ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { Public, Roles } from '../utils/roles.decorator';
 import { UpdateProfileDto } from '../models/dtos/user-manager/update-user.dto';
+import { ResponseModel } from 'src/models/reponse/response.model';
 
 @Controller('users')
 export class UserController {
@@ -31,7 +32,7 @@ export class UserController {
 
   @Get()
   @Version('1')
-  @Roles('admin')
+  @Roles('System admin')
   @ApiQuery({
     name: 'page',
     required: false,
@@ -64,11 +65,11 @@ export class UserController {
     @Query('filter') filter?: string,
   ) {
     const data = await this.userService.findAll(+page, +limit, sort, filter);
-    return {
+    return ResponseModel.success({
       data: data.data,
       total: data.total,
       page: +page,
       limit: +limit,
-    };
+    });
   }
 }
