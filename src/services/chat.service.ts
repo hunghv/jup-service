@@ -31,6 +31,7 @@ export class ChatService {
       sender: { id: senderId },
       receiver: { id: receiverId },
       message_text: messageText,
+      attact_file: '',
     });
     return this.messageRepository.save(message);
   }

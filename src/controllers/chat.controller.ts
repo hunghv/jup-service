@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Query, Version } from '@nestjs/common';
 import { ChatService } from '../services/chat.service';
+import { ResponseModel } from 'src/models/reponse/response.model';
 
 @Controller('chat')
 export class ChatController {
@@ -7,26 +8,33 @@ export class ChatController {
 
   @Get('messages')
   @Version('1')
-  getMessages(
+  async getMessages(
     @Query('senderId') senderId: string,
     @Query('receiverId') receiverId: string,
   ) {
-    return this.chatService.getMessages(senderId, receiverId);
+    const response = await this.chatService.getMessages(senderId, receiverId);
+    return ResponseModel.success(response);
   }
 
   @Post('send')
   @Version('1')
-  sendMessage(
+  async sendMessage(
     @Body('senderId') senderId: string,
     @Body('receiverId') receiverId: string,
     @Body('messageText') messageText: string,
   ) {
-    return this.chatService.sendMessage(senderId, receiverId, messageText);
+    const messageModel = await this.chatService.sendMessage(
+      senderId,
+      receiverId,
+      messageText,
+    );
+    return ResponseModel.success(messageModel);
   }
 
   @Get('users')
   @Version('1')
-  getUsers() {
-    return this.chatService.getUsers();
+  async getUsers() {
+    const response = await this.chatService.getUsers();
+    return ResponseModel.success(response);
   }
 }

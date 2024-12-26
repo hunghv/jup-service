@@ -24,21 +24,20 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    // origin: (origin, callback) => {
-    //   const allowedOrigins = [
-    //     'https://jup-admin.vercel.app',
-    //     'http://localhost:3000',
-    //     'http://localhost:9000/',
-    //     '*',
-    //   ];
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        'https://jup-admin.vercel.app',
+        'http://localhost:3000',
+        'http://localhost:9000/',
+        '*',
+      ];
 
-    //   if (!origin || allowedOrigins.includes(origin)) {
-    //     callback(null, true);
-    //   } else {
-    //     callback(new Error('Not allowed by CORS'));
-    //   }
-    // },
-    origin: '*',
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
     allowedHeaders:
