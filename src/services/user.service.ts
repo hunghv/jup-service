@@ -86,11 +86,17 @@ export class UserService {
 
   async updateProfile(request: UpdateProfileDto) {
     try {
-      const tokenData = await this.tokenService.getToken();
-      if (!tokenData) {
-        throw new UnauthorizedException();
+      let newUser = null;
+      if (request.email != null || request.email != '') {
+        newUser = await this.userRepository.findByEmail(request.email);
+      } else {
+        const tokenData = await this.tokenService.getToken();
+        if (!tokenData) {
+          throw new UnauthorizedException();
+        }
+        newUser = await this.userRepository.findByEmail(tokenData.email);
       }
-      const newUser = await this.userRepository.findByEmail(tokenData.email);
+
       if (newUser) {
         const user: User = {
           ...newUser,
@@ -105,8 +111,8 @@ export class UserService {
           city: request.city,
           state: request.state,
           zipCode: request.zipCode,
-          role: UserRole.STUDENT,
-          accountStatus: AccountStatus.ACTIVE,
+          role: request.role ?? newUser.role,
+          accountStatus: request.accountStatus ?? newUser.accountStatus,
           facebookProfile: request.facebookProfile,
           fullname: request.fullname,
           gender: request.gender,

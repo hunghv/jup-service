@@ -18,6 +18,30 @@ export class UpdateProfileDto {
   phone?: string;
 
   @ApiProperty({
+    description: 'Email of the user',
+    example: 'maquouxoufuffa-4717@yopmail.com',
+    required: false,
+  })
+  @IsOptional()
+  email?: string;
+
+  @ApiProperty({
+    description: 'Role of the user',
+    example: 'Student',
+    required: false,
+  })
+  @IsOptional()
+  role?: string;
+
+  @ApiProperty({
+    description: 'Account Status of the user',
+    example: 'Active',
+    required: false,
+  })
+  @IsOptional()
+  accountStatus?: string;
+
+  @ApiProperty({
     description: 'Primary address of the user',
     example: '123 Main St, Springfield',
     required: false,

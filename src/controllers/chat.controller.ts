@@ -23,7 +23,7 @@ export class ChatController {
     @Body('receiverId') receiverId: string,
     @Body('messageText') messageText: string,
   ) {
-    const messageModel = await this.chatService.sendMessage(
+    const messageModel = await this.chatService.sendChatMessage(
       senderId,
       receiverId,
       messageText,

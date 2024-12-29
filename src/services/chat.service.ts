@@ -26,14 +26,19 @@ export class ChatService {
     });
   }
 
-  async sendMessage(senderId: string, receiverId: string, messageText: string) {
+  async sendChatMessage(
+    senderId: string,
+    receiverId: string,
+    messageText: string,
+  ) {
     const message = this.messageRepository.create({
       sender: { id: senderId },
       receiver: { id: receiverId },
       message_text: messageText,
       attact_file: '',
     });
-    return this.messageRepository.save(message);
+    const chat = this.messageRepository.save(message);
+    return chat;
   }
 
   async getUsers() {
