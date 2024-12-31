@@ -6,12 +6,14 @@ import { UserRepository } from '../repositories/user.repository';
 import { TokenDto } from '../models/requests/get-token.dto';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { firebaseApp } from '../shared/configs/firebase-authen';
+import { EmailService } from './email.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly logService: LoggerService,
+    private readonly mailerService: EmailService,
   ) {}
 
   async verifyToken(idToken: string): Promise<DecodedIdToken> {
@@ -92,8 +94,7 @@ export class AuthService {
           ConfirmUrl: link,
         },
       };
-      //   this.mailerService.send(mail);
-      console.log(mail);
+      this.mailerService.send(mail);
     }
   }
 
@@ -115,8 +116,7 @@ export class AuthService {
         ResetUrl: resetLink,
       },
     };
-    console.log(mail);
-    // this.mailerService.send(mail);
+    this.mailerService.send(mail);
 
     return resetLink;
   }
