@@ -60,7 +60,7 @@ export class AuthService {
     const mail = {
       to: existingUser.email,
       subject: 'Reset your password for Duke team',
-      templateId: TemplateConstants.ResetPasswordTemplate,
+      templateName: TemplateConstants.ResetPasswordTemplate,
       dynamicData: {
         name: existingUser.fullname,
         resetLink: resetLink,
