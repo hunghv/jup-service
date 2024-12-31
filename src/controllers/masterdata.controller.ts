@@ -19,7 +19,8 @@ export class MasterDataController {
     description: 'master data',
   })
   async getMasterData(@Param('category') category: string) {
-    return ResponseModel.success(this.masterDataService.findAll(category));
+    const response = await this.masterDataService.findAll(category);
+    return ResponseModel.success(response);
   }
 
   @Post()
