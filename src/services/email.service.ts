@@ -1,11 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import SendGrid from '@sendgrid/mail';
 
 @Injectable()
 export class EmailService {
-  constructor() {
-    SendGrid.setApiKey(process.env.SENDGRID_API_KEY);
-  }
+  constructor() {}
 
   async send(mail: any) {
     const message = {
@@ -17,7 +14,7 @@ export class EmailService {
     };
 
     try {
-      await SendGrid.send(message);
+      console.log(message);
       console.log('Email sent successfully');
     } catch (error) {
       console.error(
