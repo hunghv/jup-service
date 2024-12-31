@@ -141,7 +141,11 @@ export class UserService {
     filter: string,
   ): Promise<{ data: User[]; total: number }> {
     const response = await this.userRepository.find(page, limit, sort, filter);
-
+    const tokenData = await this.tokenService.getToken();
+    if (!tokenData) {
+      throw new UnauthorizedException();
+    }
+    response.data = response.data.filter((x) => x.email != tokenData.email);
     return response;
   }
 }
