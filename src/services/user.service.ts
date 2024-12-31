@@ -14,6 +14,8 @@ import { UpdateProfileDto } from '../models/dtos/user-manager/update-user.dto';
 import { TokenService } from './token.service';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { firebaseApp } from '../shared/configs/firebase-authen';
+import { EmailService } from './email.service';
+import { firebaseAuth } from '../shared/configs/firebase-admin';
 
 @Injectable()
 export class UserService {
@@ -21,6 +23,7 @@ export class UserService {
     private readonly userRepository: UserRepository,
     private readonly logService: LoggerService,
     private readonly tokenService: TokenService,
+    private readonly mailerService: EmailService,
   ) {}
 
   async findOne(id: string) {
@@ -46,6 +49,9 @@ export class UserService {
         uuid: createUserDto.uid,
         id: uuidv4(),
       };
+
+      this.sendEmailVerification(newUser.uuid);
+
       return await this.userRepository.save(newUser);
     } catch (error) {
       this.logService.error(error?.message);
@@ -93,6 +99,9 @@ export class UserService {
         occupation: request.occupation,
         company: request.company,
       };
+
+      this.sendEmailVerification(newUser.uuid);
+
       return await this.userRepository.update(user);
     } else {
       throw new HttpException(`Create User with Error`, 400);
@@ -162,5 +171,25 @@ export class UserService {
     }
     response.data = response.data.filter((x) => x.email != tokenData.email);
     return response;
+  }
+
+  async sendEmailVerification(uid: string) {
+    const user = await firebaseAuth.getUser(uid);
+
+    if (!user.emailVerified) {
+      const link = await firebaseAuth.generateEmailVerificationLink(user.email);
+      const existingUser = await this.userRepository.findByEmail(user.email);
+
+      const mail = {
+        to: existingUser.email,
+        subject: 'Verify your email for L2404 team',
+        templateId: 'd-6c700f7e9eed4bdb8c925513ded4642e',
+        dynamicData: {
+          RecipientName: existingUser.fullname,
+          ConfirmUrl: link,
+        },
+      };
+      this.mailerService.send(mail);
+    }
   }
 }

@@ -47,57 +47,6 @@ export class AuthService {
     }
   }
 
-  //   async create(createAuthDto: CreateAuthDto) {
-  //     try {
-  //       const existingUser = await this.userRepository.findOne({
-  //         where: { email: createAuthDto.email },
-  //       });
-
-  //       if (existingUser) {
-  //         throw new BadRequestException('Email đã được sử dụng.');
-  //       }
-  //       const user = await firebaseAuth.createUser({
-  //         email: createAuthDto.email,
-  //         password: createAuthDto.password,
-  //         displayName: createAuthDto.fullname,
-  //         emailVerified: false,
-  //       });
-  //       if (user) {
-  //         const newUser = this.userRepository.create(createAuthDto);
-  //         newUser.uuid = user.uid;
-  //         const userEntity = this.userRepository.save(newUser);
-  //         if (userEntity) {
-  //           await this.sendEmailVerification(user.uid);
-  //           return ResponseModel.success(user, 'Register Sucessully');
-  //         }
-  //         await firebaseAuth.deleteUser(user.uid);
-  //       }
-  //       return ResponseModel.error('failed', 'SignIn has error');
-  //     } catch (error) {
-  //       return ResponseModel.error(error, 'SignIn has error');
-  //     }
-  //   }
-
-  async sendEmailVerification(uid: string) {
-    const user = await firebaseAuth.getUser(uid);
-
-    if (!user.emailVerified) {
-      const link = await firebaseAuth.generateEmailVerificationLink(user.email);
-      const existingUser = await this.userRepository.findByEmail(user.email);
-
-      const mail = {
-        to: existingUser.email,
-        subject: 'Verify your email for L2404 team',
-        templateId: 'd-6c700f7e9eed4bdb8c925513ded4642e',
-        dynamicData: {
-          RecipientName: existingUser.fullname,
-          ConfirmUrl: link,
-        },
-      };
-      this.mailerService.send(mail);
-    }
-  }
-
   async findUserByMail(mail: string) {
     const existingUser = await this.userRepository.findByEmail(mail);
     return existingUser;
