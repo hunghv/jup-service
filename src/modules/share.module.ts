@@ -7,6 +7,7 @@ import { TokenService } from '../services/token.service';
 import { MasterData } from '../entities/masterdata.entity';
 import { MasterDataService } from '../services/masterdata.service';
 import { MasterDataController } from '../controllers/masterdata.controller';
+import { EmailService } from '../services/email.service';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { MasterDataController } from '../controllers/masterdata.controller';
     TypeOrmModule.forFeature([MasterData], 'app_db'),
     TypeOrmModule.forFeature([LoggerEntity], 'log_db'),
   ],
-  providers: [LoggerService, TokenService, MasterDataService],
+  providers: [LoggerService, TokenService, MasterDataService, EmailService],
   exports: [LoggerService, TokenService],
   controllers: [MasterDataController],
 })
