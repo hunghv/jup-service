@@ -19,7 +19,7 @@ import { EmailService } from '../services/email.service';
     TypeOrmModule.forFeature([LoggerEntity], 'log_db'),
   ],
   providers: [LoggerService, TokenService, MasterDataService, EmailService],
-  exports: [LoggerService, TokenService],
+  exports: [LoggerService, TokenService, EmailService],
   controllers: [MasterDataController],
 })
 export class SharedModule {}
