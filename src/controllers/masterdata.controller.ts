@@ -3,6 +3,7 @@ import { MasterDataService } from '../services/masterdata.service';
 import { ApiQuery } from '@nestjs/swagger';
 import { RoleConstants } from 'src/shared/constants/role.constants';
 import { Roles } from 'src/utils/roles.decorator';
+import { ResponseModel } from 'src/models/reponse/response.model';
 
 @Controller('master-data')
 export class MasterDataController {
@@ -18,7 +19,7 @@ export class MasterDataController {
     description: 'master data',
   })
   async getMasterData(@Param('category') category: string) {
-    return this.masterDataService.findAll(category);
+    return ResponseModel.success(this.masterDataService.findAll(category));
   }
 
   @Post()
