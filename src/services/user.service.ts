@@ -16,6 +16,7 @@ import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { firebaseApp } from '../shared/configs/firebase-authen';
 import { EmailService } from './email.service';
 import { firebaseAuth } from '../shared/configs/firebase-admin';
+import { TemplateConstants } from '../shared/constants/email-template.constants';
 
 @Injectable()
 export class UserService {
@@ -100,7 +101,7 @@ export class UserService {
         company: request.company,
       };
 
-      this.sendEmailVerification(newUser.uuid);
+      this.sendWelcomeEmail(request.email, request.fullname, password);
 
       return await this.userRepository.update(user);
     } else {
@@ -182,14 +183,29 @@ export class UserService {
 
       const mail = {
         to: existingUser.email,
-        subject: 'Verify your email for L2404 team',
-        templateId: 'd-6c700f7e9eed4bdb8c925513ded4642e',
+        subject: 'Verify your email for Duke team',
+        templateName: TemplateConstants.VerifyAccountTemplate,
         dynamicData: {
-          RecipientName: existingUser.fullname,
-          ConfirmUrl: link,
+          name: existingUser.fullname,
+          confirmationLink: link,
+          expirationTime: 60,
         },
       };
       this.mailerService.send(mail);
     }
+  }
+
+  async sendWelcomeEmail(email: string, fullname: string, password: string) {
+    const mail = {
+      to: email,
+      subject: 'Welcome to MyApp!',
+      templateName: TemplateConstants.SendPasswordTemplate,
+      dynamicData: {
+        name: fullname,
+        welcomeLink: 'https://jup-admin.vercel.app',
+        password: password,
+      },
+    };
+    this.mailerService.send(mail);
   }
 }

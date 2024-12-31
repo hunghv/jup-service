@@ -15,7 +15,7 @@ import { ResponseModel } from '../models/reponse/response.model';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('reset-pasword')
+  @Post('reset-password')
   @Version('1')
   @Public()
   ResetPassword(@Body('email') email: string) {

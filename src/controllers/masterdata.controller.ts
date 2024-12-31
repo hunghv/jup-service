@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Param, Version } from '@nestjs/common';
 import { MasterDataService } from '../services/masterdata.service';
 import { ApiQuery } from '@nestjs/swagger';
-import { RoleConstants } from 'src/shared/constants/role.constants';
-import { Roles } from 'src/utils/roles.decorator';
-import { ResponseModel } from 'src/models/reponse/response.model';
+import { RoleConstants } from '../shared/constants/role.constants';
+import { Roles } from '../utils/roles.decorator';
+import { ResponseModel } from '../models/reponse/response.model';
 
 @Controller('master-data')
 export class MasterDataController {

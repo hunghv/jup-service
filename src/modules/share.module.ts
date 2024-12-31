@@ -9,6 +9,8 @@ import { MasterDataService } from '../services/masterdata.service';
 import { MasterDataController } from '../controllers/masterdata.controller';
 import { EmailService } from '../services/email.service';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { EmailTemplate } from '../entities/email-template.entity';
+import { EmailTemplateService } from '../services/email-template.service';
 
 @Module({
   imports: [
@@ -16,7 +18,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    TypeOrmModule.forFeature([MasterData], 'app_db'),
+    TypeOrmModule.forFeature([MasterData, EmailTemplate], 'app_db'),
     TypeOrmModule.forFeature([LoggerEntity], 'log_db'),
     MailerModule.forRoot({
       transport: {
@@ -33,8 +35,14 @@ import { MailerModule } from '@nestjs-modules/mailer';
       },
     }),
   ],
-  providers: [LoggerService, TokenService, MasterDataService, EmailService],
-  exports: [LoggerService, TokenService, EmailService],
+  providers: [
+    LoggerService,
+    TokenService,
+    MasterDataService,
+    EmailService,
+    EmailTemplateService,
+  ],
+  exports: [LoggerService, TokenService, EmailService, EmailTemplateService],
   controllers: [MasterDataController],
 })
 export class SharedModule {}

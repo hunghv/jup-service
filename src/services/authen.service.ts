@@ -7,6 +7,7 @@ import { TokenDto } from '../models/requests/get-token.dto';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { firebaseApp } from '../shared/configs/firebase-authen';
 import { EmailService } from './email.service';
+import { TemplateConstants } from '../shared/constants/email-template.constants';
 
 @Injectable()
 export class AuthService {
@@ -59,10 +60,11 @@ export class AuthService {
     const mail = {
       to: existingUser.email,
       subject: 'Reset your password for Duke team',
-      templateId: 'd-388cd3e77d7d4c11921c972b2638aa5a',
+      templateId: TemplateConstants.ResetPasswordTemplate,
       dynamicData: {
-        RecipientName: existingUser.fullname,
-        ResetUrl: resetLink,
+        name: existingUser.fullname,
+        resetLink: resetLink,
+        expirationTime: 60,
       },
     };
     this.mailerService.send(mail);

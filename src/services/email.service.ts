@@ -2,16 +2,18 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import handlebars from 'handlebars';
 import { LoggerService } from './log.service';
+import { EmailTemplateService } from './email-template.service';
 
 @Injectable()
 export class EmailService {
   constructor(
     private readonly mailerService: MailerService,
     private readonly loggerService: LoggerService,
+    private readonly emailTemplateService: EmailTemplateService,
   ) {}
 
   async send(mail: any) {
-    const template = await this.loadTemplateFromDatabase(mail.templateId);
+    const template = await this.loadTemplateFromDatabase(mail.templateName);
 
     if (!template || !template.content) {
       throw new Error('Template not found or invalid');
@@ -33,15 +35,15 @@ export class EmailService {
   }
 
   private async loadTemplateFromDatabase(
-    templateId: string,
+    templateName: string,
   ): Promise<{ content: string }> {
-    console.log(templateId);
+    const template =
+      await this.emailTemplateService.getTemplateByName(templateName);
+    if (!template) {
+      throw new Error('Template not found or invalid');
+    }
     return {
-      content: `
-        <h1>Welcome, {{RecipientName}}!</h1>
-        <p>Your registration is successful.  {{ConfirmUrl}}</p>
-        <p>Best regards,<br/>The Team</p>
-      `,
+      content: template.content,
     };
   }
 }
