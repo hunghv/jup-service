@@ -1,4 +1,3 @@
-import { CreateUserFirebaseDto } from './creaate-user-firebase.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
 import { UserRole, AccountStatus } from '../../../shared/enum';
@@ -18,6 +17,14 @@ export class CreateUserDto {
   })
   @IsOptional()
   phone?: string;
+
+  @ApiProperty({
+    description: 'email of the user',
+    example: 'hunghv2@gmail.com',
+    required: true,
+  })
+  @IsOptional()
+  email?: string;
 
   @ApiProperty({
     description: 'Primary address of the user',
@@ -164,8 +171,4 @@ export class CreateUserDto {
   })
   @IsOptional()
   bio?: string;
-
-  @ApiProperty({ example: CreateUserFirebaseDto })
-  @IsOptional()
-  firebaseUser: CreateUserFirebaseDto;
 }

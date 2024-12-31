@@ -12,6 +12,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { LoggerService } from './log.service';
 import { UpdateProfileDto } from '../models/dtos/user-manager/update-user.dto';
 import { TokenService } from './token.service';
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { firebaseApp } from '../shared/configs/firebase-authen';
 
 @Injectable()
 export class UserService {
@@ -52,8 +54,21 @@ export class UserService {
   }
 
   async create(request: CreateUserDto) {
-    const newUser = await this.createFirebaseUser(request.firebaseUser);
-    if (newUser) {
+    const firebaseAuth = getAuth(firebaseApp);
+    const password = 'Password@1';
+    const firebaseresponse = await createUserWithEmailAndPassword(
+      firebaseAuth,
+      request.email,
+      password,
+    );
+    if (firebaseresponse) {
+      const firebaseUser: CreateUserFirebaseDto = {
+        apiKey: firebaseresponse.user.displayName,
+        email: firebaseresponse.user.email,
+        displayName: request.fullname,
+        uid: firebaseresponse.user.uid,
+      };
+      const newUser = await this.createFirebaseUser(firebaseUser);
       const user: User = {
         ...newUser,
         phone: request.phone,
@@ -68,7 +83,7 @@ export class UserService {
         state: request.state,
         zipCode: request.zipCode,
         createdAt: new Date(),
-        role: UserRole.STUDENT,
+        role: request.role,
         accountStatus: AccountStatus.ACTIVE,
         facebookProfile: request.facebookProfile,
         fullname: request.fullname,
