@@ -4,6 +4,7 @@ import {
   UploadedFile,
   UploadedFiles,
   UseInterceptors,
+  Version,
 } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from '../services/cloudinary.service';
@@ -15,13 +16,16 @@ export class UploadController {
   constructor(private readonly cloudinaryService: CloudinaryService) {}
 
   @Post('image')
+  @Version('1')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    console.log(file);
     const result = await this.cloudinaryService.uploadImage(file, 'uploads');
     return ResponseModel.success(result.secure_url);
   }
 
   @Post('images')
+  @Version('1')
   @UseInterceptors(
     FilesInterceptor('files', 20, {
       storage: memoryStorage(),
