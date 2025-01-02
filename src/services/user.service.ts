@@ -17,6 +17,7 @@ import { firebaseApp } from '../shared/configs/firebase-authen';
 import { EmailService } from './email.service';
 import { firebaseAuth } from '../shared/configs/firebase-admin';
 import { TemplateConstants } from '../shared/constants/email-template.constants';
+import * as generator from 'generate-password';
 
 @Injectable()
 export class UserService {
@@ -62,7 +63,15 @@ export class UserService {
 
   async create(request: CreateUserDto) {
     const firebaseAuth = getAuth(firebaseApp);
-    const password = 'Password@1';
+    const password = generator.generate({
+      length: 12,
+      numbers: true,
+      symbols: true,
+      uppercase: true,
+      lowercase: true,
+      strict: true,
+    });
+
     const firebaseresponse = await createUserWithEmailAndPassword(
       firebaseAuth,
       request.email,
