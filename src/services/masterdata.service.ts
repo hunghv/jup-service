@@ -11,6 +11,9 @@ export class MasterDataService {
   ) {}
 
   async findAll(category: string): Promise<MasterData[]> {
+    if (category == 'All') {
+      return this.masterDataRepository.find();
+    }
     return this.masterDataRepository.find({ where: { category } });
   }
 
