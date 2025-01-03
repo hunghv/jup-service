@@ -10,6 +10,8 @@ import { TokenMiddleware } from '../middleware/token.middleware';
 import { AuthModule } from './auth.module';
 import { ChatModule } from './chat.module';
 import { CloudinaryModule } from './cloudinary.module';
+import { CourseModule } from './course.module';
+import { NewsModule } from './news.module';
 
 @Module({
   imports: [
@@ -45,6 +47,8 @@ import { CloudinaryModule } from './cloudinary.module';
     SharedModule,
     ChatModule,
     CloudinaryModule,
+    CourseModule,
+    NewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
