@@ -28,15 +28,19 @@ export class UserService {
     private readonly mailerService: EmailService,
   ) {}
 
-  async findOne(id: string) {
-    await this.userRepository.findById(id);
-  }
-  async delete(id: string) {
-    await this.userRepository.delete(id);
+  async findOne(id: string): Promise<User> {
+    return await this.userRepository.findById(id);
   }
 
-  async updateAvatar(id: string) {
+  async delete(id: string): Promise<void> {
     await this.userRepository.delete(id);
+    return;
+  }
+
+  async updateAvatar(id: string, avatarUrl: string): Promise<User> {
+    const user = await this.userRepository.findById(id);
+    user.profilePictureUrl = avatarUrl;
+    return await this.userRepository.update(user);
   }
 
   async createFirebaseUser(createUserDto: CreateUserFirebaseDto) {
@@ -186,7 +190,7 @@ export class UserService {
   async sendEmailVerification(uid: string) {
     const user = await firebaseAuth.getUser(uid);
 
-    if (!user.emailVerified) {
+    if (user && !user.emailVerified) {
       const link = await firebaseAuth.generateEmailVerificationLink(user.email);
       const existingUser = await this.userRepository.findByEmail(user.email);
 
@@ -201,6 +205,8 @@ export class UserService {
         },
       };
       this.mailerService.send(mail);
+    } else {
+      throw new HttpException(`User not found`, 400);
     }
   }
 
