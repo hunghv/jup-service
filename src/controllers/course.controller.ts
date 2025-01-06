@@ -11,7 +11,7 @@ import {
   Version,
   Query,
 } from '@nestjs/common';
-import { CreateCourseDto, UpdateCourseDto } from 'src/models/dtos';
+import { CreateCourseDto, UpdateCourseDto } from '../models/dtos';
 import { CoursesService } from '../services';
 import { FileInterceptor } from '@nestjs/platform-express';
 
@@ -23,10 +23,18 @@ export class CoursesController {
   @Version('1')
   @UseInterceptors(FileInterceptor('file'))
   async create(
-    @Body() data: CreateCourseDto,
-    @UploadedFile() file: Express.Multer.File,
+    @Body() data?: string,
+    @UploadedFile() file?: Express.Multer.File,
   ) {
-    return this.coursesService.createCourse(data, file);
+    let jsonString = '';
+    if (typeof data !== 'string') {
+      jsonString = JSON.stringify(data);
+    }
+    const objData = JSON.parse(jsonString);
+    return await this.coursesService.createCourse(
+      objData?.data as CreateCourseDto,
+      file,
+    );
   }
 
   @Get(':id')

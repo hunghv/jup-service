@@ -1,10 +1,16 @@
 // src/courses/courses.service.ts
-import { HttpException, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Course, Lesson } from 'src/entities';
+import { Course, Lesson } from '../../entities';
 import { CreateCourseDto, UpdateCourseDto } from '../../models/dtos';
 import { Repository } from 'typeorm';
 import { CloudinaryService } from '../cloudinary.service';
+import { TokenService } from '../token.service';
+import { UserRepository } from '../../repositories/user.repository';
 
 @Injectable()
 export class CoursesService {
@@ -16,13 +22,19 @@ export class CoursesService {
     private lessonsRepository: Repository<Lesson>,
 
     private cloudinaryService: CloudinaryService,
+    private readonly tokenService: TokenService,
+    private readonly userRepository: UserRepository,
   ) {}
 
   async createCourse(
     createCourseDto: CreateCourseDto,
     file: Express.Multer.File,
   ): Promise<Course> {
-    const course = this.coursesRepository.create(createCourseDto);
+
+    const course: Course = this.coursesRepository.create(createCourseDto);
+
+    console.log(course);
+
     const imageResponse = await this.cloudinaryService.uploadImage(
       file,
       'course_thumnail',
@@ -31,8 +43,15 @@ export class CoursesService {
     if (!imageResponse)
       throw new HttpException('Lưu thumnail images bị lỗi', 404);
 
-    course.thumnailUrl = imageResponse.secure_url;
+    const tokenData = await this.tokenService.getToken();
+    if (!tokenData) {
+      throw new UnauthorizedException();
+    }
 
+    const user = await this.userRepository.findByEmail(tokenData.email);
+
+    course.thumnailUrl = imageResponse.secure_url;
+    course.instructor = user;
     await this.coursesRepository.save(course);
 
     return course;

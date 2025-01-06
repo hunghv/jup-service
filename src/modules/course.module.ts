@@ -27,6 +27,8 @@ import {
 } from '../services';
 import { Like } from 'typeorm';
 import { CloudinaryModule } from './cloudinary.module';
+import { SharedModule } from './share.module';
+import { UserModule } from './user.module';
 
 @Module({
   imports: [
@@ -46,6 +48,8 @@ import { CloudinaryModule } from './cloudinary.module';
       'app_db',
     ),
     CloudinaryModule,
+    SharedModule,
+    UserModule,
   ],
   controllers: [
     CoursesController,
