@@ -125,13 +125,15 @@ export class UserService {
   async updateProfile(request: UpdateProfileDto) {
     try {
       let newUser = null;
-      if (request.email != null || request.email != '') {
+      console.log(request);
+      if (request.email) {
         newUser = await this.userRepository.findByEmail(request.email);
       } else {
         const tokenData = await this.tokenService.getToken();
         if (!tokenData) {
           throw new UnauthorizedException();
         }
+        console.log(tokenData);
         newUser = await this.userRepository.findByEmail(tokenData.email);
       }
 
@@ -159,7 +161,9 @@ export class UserService {
           occupation: request.occupation,
           company: request.company,
         };
-        return await this.userRepository.update(user);
+        const response = await this.userRepository.update(user);
+        console.log(response);
+        return response;
       } else {
         throw new HttpException(`Create User with Error`, 400);
       }

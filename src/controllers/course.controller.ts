@@ -6,17 +6,26 @@ import {
   Param,
   Patch,
   Delete,
+  UploadedFile,
+  UseInterceptors,
+  Version,
 } from '@nestjs/common';
 import { CreateCourseDto, UpdateCourseDto } from 'src/models/dtos';
 import { CoursesService } from '../services';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('courses')
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
   @Post()
-  async create(@Body() createCourseDto: CreateCourseDto) {
-    return this.coursesService.createCourse(createCourseDto);
+  @Version('1')
+  @UseInterceptors(FileInterceptor('file'))
+  async create(
+    @Body() createCourseDto: CreateCourseDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.coursesService.createCourse(createCourseDto, file);
   }
 
   @Get(':id')

@@ -26,6 +26,7 @@ import {
   PaymentsService,
 } from '../services';
 import { Like } from 'typeorm';
+import { CloudinaryModule } from './cloudinary.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { Like } from 'typeorm';
       ],
       'app_db',
     ),
+    CloudinaryModule,
   ],
   controllers: [
     CoursesController,

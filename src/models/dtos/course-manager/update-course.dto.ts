@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { CreateLessonDto } from './create-lesson.dto';
 
 export class UpdateCourseDto {
   @ApiProperty({
@@ -28,4 +29,9 @@ export class UpdateCourseDto {
     example: 'instructor123',
   })
   instructorId?: string;
+
+  @ApiProperty({
+    description: 'Danh sách các bài học trong khóa học',
+  })
+  lessons: CreateLessonDto[];
 }

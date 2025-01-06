@@ -19,11 +19,20 @@ export class Course extends BaseEntity {
   @Column('text')
   description: string;
 
+  @Column('text')
+  thumnailUrl: string;
+
   @Column()
   duration: string;
 
   @Column({ default: true })
   isActive: boolean;
+
+  @Column({ default: true })
+  isSale: boolean;
+
+  @Column()
+  saleRate: number;
 
   @Column()
   price: number;

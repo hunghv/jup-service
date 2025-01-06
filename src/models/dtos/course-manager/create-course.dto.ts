@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CreateLessonDto } from '..';
+import { IsOptional } from 'class-validator';
 
 export class CreateCourseDto {
   @ApiProperty({
@@ -19,16 +19,20 @@ export class CreateCourseDto {
     description: 'Giá của khóa học',
     example: 199.99,
   })
-  price: number;
+  @IsOptional()
+  price?: number;
 
   @ApiProperty({
-    description: 'ID của giảng viên đứng lớp',
-    example: 'instructor789',
+    description: 'rate giảm giá của đợt này',
+    example: '100%',
   })
-  instructorId: string;
+  @IsOptional()
+  saleRate?: number;
 
   @ApiProperty({
-    description: 'Danh sách các bài học trong khóa học',
+    description: 'khoá học này có đang giảm giá hay không',
+    example: 'true',
   })
-  lessons: CreateLessonDto[];
+  @IsOptional()
+  isRate?: boolean;
 }

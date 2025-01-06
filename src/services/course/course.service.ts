@@ -1,9 +1,10 @@
 // src/courses/courses.service.ts
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Course, Lesson } from 'src/entities';
 import { CreateCourseDto, UpdateCourseDto } from '../../models/dtos';
 import { Repository } from 'typeorm';
+import { CloudinaryService } from '../cloudinary.service';
 
 @Injectable()
 export class CoursesService {
@@ -13,25 +14,26 @@ export class CoursesService {
 
     @InjectRepository(Lesson, 'app_db')
     private lessonsRepository: Repository<Lesson>,
+
+    private cloudinaryService: CloudinaryService,
   ) {}
 
-  async createCourse(createCourseDto: CreateCourseDto): Promise<Course> {
+  async createCourse(
+    createCourseDto: CreateCourseDto,
+    file: Express.Multer.File,
+  ): Promise<Course> {
     const course = this.coursesRepository.create(createCourseDto);
+    const imageResponse = await this.cloudinaryService.uploadImage(
+      file,
+      'course_thumnail',
+    );
 
-    // Lưu khóa học trước khi thêm bài học
+    if (!imageResponse)
+      throw new HttpException('Lưu thumnail images bị lỗi', 404);
+
+    course.thumnailUrl = imageResponse.secure_url;
+
     await this.coursesRepository.save(course);
-
-    // Tạo và gán bài học cho khóa học
-    const lessons = createCourseDto.lessons.map((lessonDto) => {
-      const lesson = this.lessonsRepository.create({
-        ...lessonDto,
-        course: course,
-      });
-      return this.lessonsRepository.save(lesson);
-    });
-
-    // Đảm bảo rằng khóa học và bài học đã được lưu thành công
-    course.lessons = await Promise.all(lessons);
 
     return course;
   }
@@ -47,11 +49,25 @@ export class CoursesService {
     id: string,
     updateCourseDto: UpdateCourseDto,
   ): Promise<Course> {
+    const course = await this.coursesRepository.findOne({
+      where: { id },
+      relations: ['lessons'], // Lấy tất cả bài học liên quan
+    });
+    const lessons = updateCourseDto.lessons.map((lessonDto) => {
+      const lesson = this.lessonsRepository.create({
+        ...lessonDto,
+        course: course,
+      });
+      return this.lessonsRepository.save(lesson);
+    });
+
+    course.lessons = await Promise.all(lessons);
+
     await this.coursesRepository.update(id, updateCourseDto);
     return this.coursesRepository.findOne({
       where: { id },
-      relations: ['lessons'], // Lấy tất cả bài học liên quan
-    }); // Trả về khóa học đã được cập nhật
+      relations: ['lessons'],
+    });
   }
 
   async removeCourse(id: string): Promise<void> {
