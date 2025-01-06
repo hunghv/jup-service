@@ -74,7 +74,15 @@ export class CoursesService {
     await this.coursesRepository.delete(id);
   }
 
-  async findAllCourses(): Promise<Course[]> {
-    return this.coursesRepository.find(); // Trả về tất cả các khóa học
+  async findAllCourses(
+    page: number,
+    limit: number,
+  ): Promise<{ data: Course[]; total: number }> {
+    const [data, total] = await this.coursesRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    return { data, total };
   }
 }
