@@ -38,31 +38,31 @@ export class Course extends BaseEntity {
   price: number;
 
   @Column({ type: 'float', nullable: true }) // Thêm rating vào
-  rating: number;
+  rating?: number;
 
   @ManyToOne(() => User, (user) => user.courses)
   instructor: User;
 
   @OneToMany(() => Enrollment, (enrollment) => enrollment.course)
-  enrollments: Enrollment[];
+  enrollments?: Enrollment[];
 
   @OneToMany(() => Comment, (comment) => comment.course)
-  comments: Comment[];
+  comments?: Comment[];
 
   @OneToMany(() => Like, (like) => like.course)
-  likes: Like[];
+  likes?: Like[];
 
   @OneToMany(() => Lesson, (lesson) => lesson.course)
-  lessons: Lesson[];
+  lessons?: Lesson[];
 
   @OneToMany(() => Review, (review) => review.course)
-  reviews: Review[];
+  reviews?: Review[];
 
   @OneToMany(() => Question, (question) => question.course)
-  questions: Question[]; // Câu hỏi của khóa học
+  questions?: Question[]; // Câu hỏi của khóa học
 
   @OneToMany(() => Answer, (answer) => answer.course)
-  answers: Answer[]; // Câu trả lời của khóa học
+  answers?: Answer[]; // Câu trả lời của khóa học
 
   @OneToMany(() => Payment, (payment) => payment.user)
   @IsOptional()

@@ -11,6 +11,7 @@ import { Repository } from 'typeorm';
 import { CloudinaryService } from '../cloudinary.service';
 import { TokenService } from '../token.service';
 import { UserRepository } from '../../repositories/user.repository';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class CoursesService {
@@ -30,11 +31,6 @@ export class CoursesService {
     createCourseDto: CreateCourseDto,
     file: Express.Multer.File,
   ): Promise<Course> {
-
-    const course: Course = this.coursesRepository.create(createCourseDto);
-
-    console.log(course);
-
     const imageResponse = await this.cloudinaryService.uploadImage(
       file,
       'course_thumnail',
@@ -50,8 +46,20 @@ export class CoursesService {
 
     const user = await this.userRepository.findByEmail(tokenData.email);
 
-    course.thumnailUrl = imageResponse.secure_url;
-    course.instructor = user;
+    const course: Course = {
+      instructor: user,
+      title: createCourseDto.title,
+      id: uuidv4(),
+      description: createCourseDto.description,
+      isActive: createCourseDto.isActive,
+      isSale: createCourseDto.isRate,
+      saleRate: createCourseDto.saleRate,
+      duration: createCourseDto.duration,
+      price: createCourseDto.price,
+      createdAt: new Date(),
+      thumnailUrl: imageResponse.secure_url ?? ''
+    };
+
     await this.coursesRepository.save(course);
 
     return course;
@@ -98,6 +106,7 @@ export class CoursesService {
     limit: number,
   ): Promise<{ data: Course[]; total: number }> {
     const [data, total] = await this.coursesRepository.findAndCount({
+      where: { isActive: true },
       skip: (page - 1) * limit,
       take: limit,
     });

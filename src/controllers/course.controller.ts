@@ -23,16 +23,12 @@ export class CoursesController {
   @Version('1')
   @UseInterceptors(FileInterceptor('file'))
   async create(
-    @Body() data?: string,
+    @Body() body: any,
     @UploadedFile() file?: Express.Multer.File,
   ) {
-    let jsonString = '';
-    if (typeof data !== 'string') {
-      jsonString = JSON.stringify(data);
-    }
-    const objData = JSON.parse(jsonString);
+    const objData: CreateCourseDto = JSON.parse(body?.data);
     return await this.coursesService.createCourse(
-      objData?.data as CreateCourseDto,
+      objData,
       file,
     );
   }

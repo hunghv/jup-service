@@ -23,6 +23,13 @@ export class CreateCourseDto {
   price?: number;
 
   @ApiProperty({
+    description: 'thời lượng khóa học',
+    example: '1h',
+  })
+  @IsOptional()
+  duration?: string;
+
+  @ApiProperty({
     description: 'rate giảm giá của đợt này',
     example: '100%',
   })
@@ -35,4 +42,11 @@ export class CreateCourseDto {
   })
   @IsOptional()
   isRate?: boolean;
+
+  @ApiProperty({
+    description: 'ẩn hiện khóa học',
+    example: 'true',
+  })
+  @IsOptional()
+  isActive?: boolean;
 }
