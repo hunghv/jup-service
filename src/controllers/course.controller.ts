@@ -23,10 +23,10 @@ export class CoursesController {
   @Version('1')
   @UseInterceptors(FileInterceptor('file'))
   async create(
-    @Body() createCourseDto: CreateCourseDto,
+    @Body() data: CreateCourseDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.coursesService.createCourse(createCourseDto, file);
+    return this.coursesService.createCourse(data, file);
   }
 
   @Get(':id')
