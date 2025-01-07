@@ -57,7 +57,7 @@ export class CoursesService {
       duration: createCourseDto.duration,
       price: createCourseDto.price,
       createdAt: new Date(),
-      thumnailUrl: imageResponse.secure_url ?? ''
+      thumnailUrl: imageResponse.secure_url ?? '',
     };
 
     await this.coursesRepository.save(course);
@@ -105,10 +105,18 @@ export class CoursesService {
     page: number,
     limit: number,
   ): Promise<{ data: Course[]; total: number }> {
-    const [data, total] = await this.coursesRepository.findAndCount({
+    const [courseList, total] = await this.coursesRepository.findAndCount({
       where: { isActive: true },
       skip: (page - 1) * limit,
       take: limit,
+    });
+
+    const data: Course[] = courseList.map((x) => {
+      return {
+        ...x,
+        originalPrice: x.price,
+        price: x.isSale ? x.price * (x.saleRate / 100) : x.price,
+      };
     });
 
     return { data, total };
