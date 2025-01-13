@@ -41,7 +41,7 @@ export class CreateCourseDto {
     example: 'true',
   })
   @IsOptional()
-  isRate?: boolean;
+  isSale?: boolean;
 
   @ApiProperty({
     description: 'ẩn hiện khóa học',

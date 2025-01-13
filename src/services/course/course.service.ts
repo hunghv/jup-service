@@ -52,7 +52,7 @@ export class CoursesService {
       id: uuidv4(),
       description: createCourseDto.description,
       isActive: createCourseDto.isActive,
-      isSale: createCourseDto.isRate,
+      isSale: createCourseDto.isSale,
       saleRate: createCourseDto.saleRate,
       duration: createCourseDto.duration,
       price: createCourseDto.price,
@@ -115,7 +115,7 @@ export class CoursesService {
       return {
         ...x,
         originalPrice: x.price,
-        price: x.isSale ? x.price * (x.saleRate / 100) : x.price,
+        price: x.isSale ? x.price * (x.saleRate / 100) : x.price * 1,
       };
     });
 

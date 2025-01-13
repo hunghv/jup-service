@@ -28,7 +28,7 @@ export class Course extends BaseEntity {
   @Column({ default: true })
   isActive: boolean;
 
-  @Column({ default: true })
+  @Column({ default: false })
   isSale: boolean;
 
   @Column()
